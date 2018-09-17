@@ -24,22 +24,19 @@
       </thead>
       <tbody *ngFor="let item of item; let i = index" [attr.data-index]="i">
         <tr>
-          <td [ngbPopover]="popOver" popoverClass="popover1" container="body">
-            <a>
+          <td>
+            <label (click)="newResults(item, content)">
               {{item.name}}
-            </a>
-            <ng-template #popOver>
-                <app-modal [data]="item"></app-modal>
-            </ng-template>
+            </label>
           </td>
-          <td>       
+          <td>
             <ng-template #tipContent placement="bottom">{{item.shortDescription | sanitize}}</ng-template>
-            <div [ngbTooltip]="tipContent" container="body" class="text-truncate wrap-text">   
-                {{item.shortDescription | sanitize}}          
+            <div [ngbTooltip]="tipContent" container="body" class="text-truncate wrap-text">
+              {{item.shortDescription | sanitize}}
             </div>
           </td>
           <td>{{item.msrp}}</td>
-          <td (click)="newResults(content)">
+          <td (click)="newResults(item, content)">
             <a>
               <img class="itemImage" src="{{item.thumbnailImage}}" />
             </a>
@@ -49,4 +46,52 @@
     </table>
   </div>
 </div>
-<div class="cover"></div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ itemToShow.name }}</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <div class="container">
+          <div class="row mt-3">
+            <div class="col-12">
+              <img class="itemImage" src="{{itemToShow.mediumImage}}" />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <label class="form-check-label">{{ itemToShow.shortDescription | sanitize}} </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              Model number: <label class="form-check-label">{{ itemToShow.modelNumber }} </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              MSRP: <label class="form-check-label">{{ itemToShow.msrp }} </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              Customer rating: <label class="form-check-label">{{ itemToShow.customerRating }} </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              Customer reviews: <label class="form-check-label">{{ itemToShow.numReviews }} </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              Item ID: <label class="form-check-label">{{ itemToShow.itemId }} </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

@@ -12,11 +12,8 @@ import { AboutComponent } from './ui/about/about.component';
 import { SearchService } from './services/search.service';
 import { HttpClientModule } from '@angular/common/http';
 import { JsonpModule } from '@angular/http';
-import { ResultsComponent } from './ui/results/results.component';
-import { DataService } from './services/data.service';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SanitizePipe } from './ui/sanitize.pipe';
-import { ModalComponent } from './ui/modal/modal/modal.component';
 
 const appRoutes: Routes = [
   { path: 'Home', component: HomeComponent },
@@ -29,12 +26,6 @@ const appRoutes: Routes = [
   {
     path: '',
     redirectTo: '/About',
-    pathMatch: 'full'
-  },
-  { path: 'Results', component: ResultsComponent },
-  {
-    path: '',
-    redirectTo: '/Results',
     pathMatch: 'full'
   },
   { path: '404', component: NotFoundComponent },
@@ -50,9 +41,7 @@ const appRoutes: Routes = [
     HomeComponent,
     NotFoundComponent,
     AboutComponent,
-    ResultsComponent,
-    SanitizePipe,
-    ModalComponent
+    SanitizePipe
   ],
   imports: [
     BrowserModule,
@@ -62,10 +51,10 @@ const appRoutes: Routes = [
     NgbModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      { enableTracing: false }
     )
   ],
-  providers: [SearchService, DataService],
+  providers: [SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

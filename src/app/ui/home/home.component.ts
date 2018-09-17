@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchModel, Item } from '../../models/SearchModel';
 import { SearchService } from 'src/app/services/search.service';
-import { DataService } from 'src/app/services/data.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-home',
@@ -16,11 +15,10 @@ export class HomeComponent implements OnInit {
   SearchModel: SearchModel;
   item: Item[] = [];
   itemToShow: Item[];
-  constructor(private Searchservice: SearchService, private data: DataService, private modalService: NgbModal) { }
+  constructor(private Searchservice: SearchService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.showHeader = false;
-    this.data.currentItem.subscribe(itemToShow => this.itemToShow = itemToShow);
   }
   searchItems(searchTerm) {
     this.item = null;
@@ -33,19 +31,12 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-  newResults(itemToShow) {
-    this.data.displayResult(itemToShow);
-    this.modalService.open('', {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  newResults(itemToShow, content) {
+    this.itemToShow = itemToShow;
+    this.modalService.open(content, { size: 'lg', windowClass: 'modal-bigger', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed`;
     });
-    /*
-    this.modalService.open(itemToShow, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed`;
-    });
-    */
   }
 }
