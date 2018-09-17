@@ -1,10 +1,4 @@
-// To parse this data:
-//
-//   import { Convert, Items } from "./file";
-//
-//   const items = Convert.toItems(json);
-
-export interface Items {
+export interface SearchModel {
     query:         string;
     sort:          string;
     responseGroup: string;
@@ -12,7 +6,24 @@ export interface Items {
     start:         number;
     numItems:      number;
     items:         Item[];
-    facets:        any[];
+    facets:        Facet[];
+}
+
+export interface Facet {
+    name:        string;
+    properties:  Properties;
+    displayName: string;
+    facetValues: FacetValue[];
+}
+
+export interface FacetValue {
+    name:  string;
+    count: number;
+}
+
+export interface Properties {
+    multi:     string;
+    nullCount: string;
 }
 
 export interface Item {
@@ -49,10 +60,13 @@ export interface Item {
     msrp?:                    number;
 }
 
-export enum CategoryPath {
-}
+
 export enum CategoryNode {
 }
+
+export enum CategoryPath {
+}
+
 
 export interface GiftOptions {
     allowGiftWrap:    boolean;
@@ -78,15 +92,4 @@ export enum OfferType {
 
 export enum Stock {
     Available = 'Available',
-}
-
-// Converts JSON strings to/from your types
-export namespace Convert {
-    export function toItems(json: string): Items {
-        return JSON.parse(json);
-    }
-
-    export function itemsToJson(value: Items): string {
-        return JSON.stringify(value);
-    }
 }
