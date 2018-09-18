@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, asapScheduler, pipe, of, from, interval, merge, fromEvent, observable } from 'rxjs';
-import { map, tap, catchError, filter, scan } from 'rxjs/operators';
-import { Jsonp, Response } from '@angular/http';
-import { SearchModel } from '../models/SearchModel';
+import { Observable, of} from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Jsonp } from '@angular/http';
+import { SearchModel, Item } from '../models/SearchModel';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +25,26 @@ export class SearchService {
   }
   constructor(private http: HttpClient, private jsonp: Jsonp) { }
 
+  /*
   getRecommendedItems(itemId: string): Observable<SearchModel> {
     //this.API_URL = 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId + '&callback=__ng_jsonp__.__req$'+ this.times +'.finished';
-    this.API_URL = 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId + '&jsonp=JSONP_CALLBACK';
-    return this.jsonp.request(this.API_URL, { method: 'Get' }).pipe(map(this.extractData));
+    this.API_URL = 'http://localhost:3000/api/' + 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&callback=JSONP_CALLBACK&format=json&itemId=' + itemId;
+    return this.jsonp.request(this.API_URL, { method: 'Get' }).pipe(map(this.extractDataForRecommendations));
   }
-  mycallback = function(data) {
-    alert(data.foo);
-  };
+  */
+   /*
+ getRecommendedItems(itemId: string): Observable<SearchModel> {
+  //this.API_URL = 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId + '&callback=__ng_jsonp__.__req$'+ this.times +'.finished';
+  this.API_URL = '/api/' + 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId;
+  return this.http.get(this.API_URL).pipe(map(this.extractDataForRecommendations));
+}
+*/
 
+getRecommendedItems(itemId: string) {
+  //this.API_URL = 'api/' + 'v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId;
+  this.API_URL = 'https://localhost:5001/api/values/' + itemId;
+  return this.http.get(this.API_URL);
+}
   searchItems(searchTerm: string): Observable<SearchModel> {
     this.API_URL = 'http://api.walmartlabs.com/v1/search?query=' + searchTerm + '&format=json&apiKey=86uydk66yy93v2bmytuazcvw&callback=JSONP_CALLBACK';
     return this.jsonp.request(this.API_URL, { method: 'Get' }).pipe(map(this.extractData));
@@ -45,4 +55,12 @@ export class SearchService {
     console.log('Body', body);
     return body;
   }
+
+  /*
+  extractDataForRecommendations(any: any) {
+    const body = any.json();
+    console.log('Body', body);
+    return body;
+  }
+  */
 }

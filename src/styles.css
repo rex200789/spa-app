@@ -12,6 +12,14 @@
   display: block;
   width: 25vw;
 }
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.card {
+  display: inline-block;
+}
 
 .modal-lg {
   width: 80vw !important;

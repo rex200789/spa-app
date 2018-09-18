@@ -35,6 +35,20 @@ export class HomeComponent implements OnInit {
   }
   newResults(itemToShow, content) {
     this.itemToShow = itemToShow;
+    this.Searchservice.getRecommendedItems(itemToShow.itemId).subscribe((data: Item[]) => {
+      this.recommendeditems = data;
+  });
+
+    this.modalService.open(content, { size: 'lg', windowClass: 'modal-bigger', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
+  }
+  /*
+  newResults(itemToShow, content) {
+    this.itemToShow = itemToShow;
+
     this.Searchservice.getRecommendedItems(itemToShow.itemId).subscribe(mainItem => {
       this.RecommendedModel = mainItem;
       this.recommendeditems = mainItem.items;
@@ -46,4 +60,5 @@ export class HomeComponent implements OnInit {
       this.closeResult = `Dismissed`;
     });
   }
+  */
 }
