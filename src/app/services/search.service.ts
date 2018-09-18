@@ -13,6 +13,7 @@ export class SearchService {
   private API_URL: string;
   private result: string;
   data: string;
+  times: number;
   private log(message: string) {
     console.log(`Message: ${message}`);
   }
@@ -25,12 +26,14 @@ export class SearchService {
   }
   constructor(private http: HttpClient, private jsonp: Jsonp) { }
 
-  /*
-  searchItems(searchTerm: string) {
-    this.API_URL = 'http://api.walmartlabs.com/v1/search?query='+ searchTerm +'&format=json&apiKey=86uydk66yy93v2bmytuazcvw&callback=JSONP_CALLBACK';
-    return this.jsonp.request(this.API_URL, { method: 'Get' });
+  getRecommendedItems(itemId: string): Observable<SearchModel> {
+    //this.API_URL = 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId + '&callback=__ng_jsonp__.__req$'+ this.times +'.finished';
+    this.API_URL = 'http://api.walmartlabs.com/v1/nbp?apiKey=86uydk66yy93v2bmytuazcvw&format=json&itemId=' + itemId + '&jsonp=JSONP_CALLBACK';
+    return this.jsonp.request(this.API_URL, { method: 'Get' }).pipe(map(this.extractData));
   }
-  */
+  mycallback = function(data) {
+    alert(data.foo);
+  };
 
   searchItems(searchTerm: string): Observable<SearchModel> {
     this.API_URL = 'http://api.walmartlabs.com/v1/search?query=' + searchTerm + '&format=json&apiKey=86uydk66yy93v2bmytuazcvw&callback=JSONP_CALLBACK';

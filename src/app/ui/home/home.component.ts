@@ -13,7 +13,9 @@ export class HomeComponent implements OnInit {
   private searchTerm: string;
   closeResult: string;
   SearchModel: SearchModel;
+  RecommendedModel: SearchModel;
   item: Item[] = [];
+  recommendeditems: Item[] = [];
   itemToShow: Item[];
   constructor(private Searchservice: SearchService, private modalService: NgbModal) { }
 
@@ -33,6 +35,11 @@ export class HomeComponent implements OnInit {
   }
   newResults(itemToShow, content) {
     this.itemToShow = itemToShow;
+    this.Searchservice.getRecommendedItems(itemToShow.itemId).subscribe(mainItem => {
+      this.RecommendedModel = mainItem;
+      this.recommendeditems = mainItem.items;
+    });
+
     this.modalService.open(content, { size: 'lg', windowClass: 'modal-bigger', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
