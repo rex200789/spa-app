@@ -25,10 +25,12 @@ export class SearchService {
   }
   constructor(private http: HttpClient, private jsonp: Jsonp) { }
 
+  /* since this api does not support JSONP I decided to make this call via my service */
   getRecommendedItems(itemId: string) {
     this.API_URL = 'https://localhost:5001/api/values/' + itemId;
     return this.http.get(this.API_URL);
   }
+  /* since this api supports JSON, I decided to make this call via the UI and not my service */
   searchItems(searchTerm: string): Observable<SearchModel> {
     this.API_URL = 'http://api.walmartlabs.com/v1/search?query=' + searchTerm + '&format=json&apiKey=86uydk66yy93v2bmytuazcvw&callback=JSONP_CALLBACK';
     return this.jsonp.request(this.API_URL, { method: 'Get' }).pipe(map(this.extractData));
