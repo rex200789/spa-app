@@ -1,19 +1,19 @@
 <div class="container">
-  <div class="row mt-3">
-    <div class="col-2">
+  <div class="row mt-3 row-centered">
+    <div class="col-2 col-centered">
       <label class="form-check-label">Please enter search </label>
     </div>
     <div class="col-8">
       <input #searchTerm type="text" class="form-control form-control-lg" placeholder="Search term">
     </div>
-    <div class="col-2">
+    <div class="col-2 col-centered">
       <button class="btn btn-primary" (click)="searchItems(searchTerm.value)">Search</button>
     </div>
   </div>
 </div>
 <div class="row mt-3">
   <div class="col-sm table-wrapper-scroll-y">
-    <table class="table table-bordered table-hover table-responsive ">
+    <table class="table table-hover table-responsive ">
       <thead *ngIf="showHeader">
         <tr>
           <th scope="col">Name</th>
@@ -25,7 +25,7 @@
       <tbody *ngFor="let item of item; let i = index" [attr.data-index]="i">
         <tr>
           <td>
-            <label (click)="newResults(item, content)">
+            <label class="text-pointer" (click)="newResults(item, content)">        
               {{item.name}}
             </label>
           </td>
@@ -38,7 +38,7 @@
           <td>{{item.msrp}}</td>
           <td (click)="newResults(item, content)">
             <a>
-              <img class="itemImage" src="{{item.thumbnailImage}}" />
+              <img class="itemImage text-pointer" src="{{item.thumbnailImage}}" />
             </a>
           </td>
         </tr>
@@ -94,11 +94,12 @@
       </div>
     </form>
   </div>
-  <div class="modal-footer scrolling-wrapper">
+  <div #recFound class="modal-footer scrolling-wrapper">
     <div class="row mt-3" *ngFor="let recitem of recommendeditems; let i = index" [attr.data-index]="i">
       <div class="card">
           <div class="col-4">
-              <label class="form-check-label">{{ recitem.name }} </label>
+              <ng-template #tipContentsmall placement="bottom">{{recitem.name | sanitize}}</ng-template>
+              <label [ngbTooltip]="tipContentsmall" container="body" class="form-check-label text-truncate wrap-text-small">{{ recitem.name }} </label>
             </div>
             <div class="col-5">
               <img class="itemImage" src="{{recitem.thumbnailImage}}" />

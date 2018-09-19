@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   RecommendedModel: SearchModel;
   item: Item[] = [];
   recommendeditems: Item[] = [];
+  noitems: boolean;
   itemToShow: Item[];
   constructor(private Searchservice: SearchService, private modalService: NgbModal) { }
 
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
     this.showHeader = false;
   }
   searchItems(searchTerm) {
+    this.noitems = false;
     this.item = null;
     this.Searchservice.searchItems(searchTerm).subscribe(mainItem => {
       this.SearchModel = mainItem;
@@ -36,22 +38,12 @@ export class HomeComponent implements OnInit {
   newResults(itemToShow, content) {
     this.itemToShow = itemToShow;
     this.Searchservice.getRecommendedItems(itemToShow.itemId).subscribe((data: Item[]) => {
-      this.recommendeditems = data;
-  });
-
-    this.modalService.open(content, { size: 'lg', windowClass: 'modal-bigger', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed`;
-    });
-  }
-  /*
-  newResults(itemToShow, content) {
-    this.itemToShow = itemToShow;
-
-    this.Searchservice.getRecommendedItems(itemToShow.itemId).subscribe(mainItem => {
-      this.RecommendedModel = mainItem;
-      this.recommendeditems = mainItem.items;
+      try {
+        this.recommendeditems = data.slice(0, 10);
+      }
+      catch (Error) {
+        this.noitems = true;
+      }
     });
 
     this.modalService.open(content, { size: 'lg', windowClass: 'modal-bigger', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -60,5 +52,4 @@ export class HomeComponent implements OnInit {
       this.closeResult = `Dismissed`;
     });
   }
-  */
 }
